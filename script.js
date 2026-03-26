@@ -200,7 +200,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 500);
     }, 2000);
 
-
     // Add scroll animation to header
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
@@ -250,7 +249,6 @@ document.addEventListener('DOMContentLoaded', function() {
             hamburger.classList.remove('active');
         });
     });
-
 
     // Filter buttons functionality
     const filterButtons = document.querySelectorAll('.filter-btn');
@@ -319,6 +317,122 @@ document.addEventListener('DOMContentLoaded', function() {
             closeEventModal();
         }
     });
+
+    // Smooth scrolling for navigation links with gold theme
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                    inline: 'nearest'
+                });
+            }
+        });
+    });
+
+    // PERFORMANCE: Throttled scroll handlers (60fps)
+    let ticking = false;
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(() => {
+                // Parallax hero
+                const scrolled = window.pageYOffset;
+                const hero = document.querySelector('.hero');
+                const particles = document.querySelectorAll('.particle');
+                
+                if (hero) {
+                    hero.style.transform = `translateY(${scrolled * 0.25}px)`;
+                }
+                
+                particles.forEach((particle, index) => {
+                    const speed = 0.08 + (index * 0.03);
+                    particle.style.transform = `translateY(-${scrolled * speed}px)`;
+                });
+
+                // Shimmer text
+                const heroText = document.querySelector('.hero-content h1');
+                if (heroText) {
+                    const glow = Math.min(12, scrolled / 15);
+                    heroText.style.textShadow = `0 0 ${glow}px rgba(212, 175, 55, 0.8), 0 0 ${glow*1.5}px rgba(212, 175, 55, 0.4)`;
+                }
+                
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }
+
+    window.addEventListener('scroll', requestTick, { passive: true });
+
+    // Add confetti effect on successful registration (optional enhancement)
+    function createConfetti() {
+        const colors = ['#667eea', '#764ba2', '#ff0080', '#00f5ff', '#ec4899'];
+        for (let i = 0; i < 20; i++) {
+            const confetti = document.createElement('div');
+            confetti.style.position = 'fixed';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.top = '-10px';
+            confetti.style.width = '10px';
+            confetti.style.height = '10px';
+            confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.pointerEvents = 'none';
+            confetti.style.zIndex = '9999';
+            confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear infinite`;
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => {
+                confetti.remove();
+            }, 5000);
+        }
+    }
+
+    // Add CSS for confetti animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Google Form Integration
+    document.getElementById("registration-form").addEventListener("submit", function(e){
+        e.preventDefault();
+
+        const form = this;
+        const formData = new FormData(form);
+
+        // get selected events
+        const selected = Array.from(document.getElementById("event").selectedOptions)
+            .map(opt => opt.value);
+
+        formData.set("event", selected.join(", "));
+
+        fetch("https://script.google.com/macros/s/AKfycbzdLqm-x0HJHdEUCtvTYm-8iRcnvZaZ0jqYKVUFKyA-8LOjx5xukaBtHKs042k3Qi2I/exec", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.text())
+        .then(() => {
+            alert("Registered Successfully!");
+            form.reset();
+        })
+        .catch(() => {
+            alert("Error!");
+        });
+    });
+
+    // Initialize Tom Select for multi-select dropdown
+    new TomSelect("#event", {
+        plugins: ['remove_button'],
+        placeholder: "Select multiple events...",
+        maxItems: null, // unlimited selection
+    });
 });
 
 // Event Modal Functions
@@ -344,120 +458,3 @@ function closeEventModal() {
     eventModal.style.display = 'none';
     document.body.style.overflow = 'auto';
 }
-
-// Smooth scrolling for navigation links with gold theme
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start',
-                inline: 'nearest'
-            });
-        }
-    });
-});
-
-// PERFORMANCE: Throttled scroll handlers (60fps)
-let ticking = false;
-function requestTick() {
-    if (!ticking) {
-        requestAnimationFrame(() => {
-            // Parallax hero
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero');
-            const particles = document.querySelectorAll('.particle');
-            
-            if (hero) {
-                hero.style.transform = `translateY(${scrolled * 0.25}px)`;
-            }
-            
-            particles.forEach((particle, index) => {
-                const speed = 0.08 + (index * 0.03);
-                particle.style.transform = `translateY(-${scrolled * speed}px)`;
-            });
-
-            // Shimmer text
-            const heroText = document.querySelector('.hero-content h1');
-            if (heroText) {
-                const glow = Math.min(12, scrolled / 15);
-                heroText.style.textShadow = `0 0 ${glow}px rgba(212, 175, 55, 0.8), 0 0 ${glow*1.5}px rgba(212, 175, 55, 0.4)`;
-            }
-            
-            ticking = false;
-        });
-        ticking = true;
-    }
-}
-
-window.addEventListener('scroll', requestTick, { passive: true });
-
-// Add confetti effect on successful registration (optional enhancement)
-function createConfetti() {
-    const colors = ['#667eea', '#764ba2', '#ff0080', '#00f5ff', '#ec4899'];
-    for (let i = 0; i < 20; i++) {
-        const confetti = document.createElement('div');
-        confetti.style.position = 'fixed';
-        confetti.style.left = Math.random() * 100 + 'vw';
-        confetti.style.top = '-10px';
-        confetti.style.width = '10px';
-        confetti.style.height = '10px';
-        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-        confetti.style.pointerEvents = 'none';
-        confetti.style.zIndex = '9999';
-        confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear infinite`;
-        document.body.appendChild(confetti);
-        
-        setTimeout(() => {
-            confetti.remove();
-        }, 5000);
-    }
-}
-
-// Add CSS for confetti animation
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes fall {
-        to {
-            transform: translateY(100vh) rotate(360deg);
-        }
-    }
-`;
-document.head.appendChild(style);
-
-
-document.getElementById("registration-form").addEventListener("submit", function(e){
-    e.preventDefault();
-
-    const form = this;
-    const formData = new FormData(form);
-
-    // get selected events
-    const selected = Array.from(document.getElementById("event").selectedOptions)
-        .map(opt => opt.value);
-
-    formData.set("event", selected.join(", "));
-
-    fetch("https://script.google.com/macros/s/AKfycbzdLqm-x0HJHdEUCtvTYm-8iRcnvZaZ0jqYKVUFKyA-8LOjx5xukaBtHKs042k3Qi2I/exec", {
-        method: "POST",
-        body: formData
-    })
-    .then(res => res.text())
-    .then(() => {
-        alert("Registered Successfully!");
-        form.reset();
-    })
-    .catch(() => {
-        alert("Error!");
-    });
-});
-
-
-
-new TomSelect("#event", {
-    plugins: ['remove_button'],
-    placeholder: "Select multiple events...",
-    maxItems: null, // unlimited selection
-});
