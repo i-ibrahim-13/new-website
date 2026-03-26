@@ -1260,10 +1260,24 @@ footer p span {
     }
 }
 
-/* Responsive Design */
+/* Enhanced Responsive Design - Mobile First Approach */
+
+/* Base Mobile Styles (320px - 768px) */
 @media (max-width: 768px) {
+    /* Container & Layout */
+    .container {
+        padding: 0 15px;
+        max-width: 100%;
+    }
+
+    /* Header & Navigation */
+    header .container {
+        padding: 1rem;
+    }
+    
     .hamburger {
         display: flex;
+        z-index: 1001;
     }
     
     nav {
@@ -1272,12 +1286,14 @@ footer p span {
         left: -100%;
         width: 100%;
         height: calc(100vh - 70px);
-        background: var(--black-deep);
+        background: rgba(5, 5, 5, 0.95);
+        backdrop-filter: blur(10px);
         flex-direction: column;
         align-items: center;
         padding-top: 2rem;
-        transition: 0.3s;
+        transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 999;
+        border-top: 1px solid var(--card-border);
     }
     
     nav.active {
@@ -1286,17 +1302,116 @@ footer p span {
     
     nav ul {
         flex-direction: column;
-        gap: 1rem;
+        gap: 1.5rem;
+        text-align: center;
     }
     
+    nav ul li a {
+        font-size: 1.1rem;
+        padding: 1rem;
+        border-radius: 8px;
+        width: 80%;
+        margin: 0 auto;
+        display: block;
+        transition: all 0.3s ease;
+    }
+    
+    nav ul li a:hover {
+        background: rgba(212, 175, 55, 0.1);
+        border-left: 3px solid var(--gold-primary);
+    }
+
+    /* Hero Section */
+    .hero {
+        min-height: 80vh;
+        padding: 2rem 0;
+    }
+    
+    .hero-content h1 {
+        font-size: 2.5rem;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero-content p {
+        font-size: 1.1rem;
+        margin-bottom: 2.5rem;
+    }
+    
+    .hero-stats {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
+    }
+    
+    .stat {
+        width: 100%;
+        max-width: 200px;
+    }
+    
+    .stat h3 {
+        font-size: 2rem;
+    }
+
+    /* Sections */
+    section {
+        padding: 60px 0;
+    }
+    
+    .section-header h2 {
+        font-size: 2.2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .section-header p {
+        font-size: 1.1rem;
+    }
+
+    /* Filter Container */
+    .filter-container {
+        gap: 0.75rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .filter-btn {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+        flex: 1;
+        min-width: 120px;
+    }
+
+    /* Events Grid */
+    .events-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .event-card {
+        height: 280px;
+        margin: 0 auto;
+        max-width: 400px;
+    }
+    
+    .event-icon {
+        font-size: 3.5rem;
+    }
+    
+    .event-content h3 {
+        font-size: 1.3rem;
+    }
+
+    /* Schedule Timeline */
     .timeline::after {
         left: 31px;
+        width: 2px;
     }
     
     .timeline-item {
         width: 100%;
         padding-left: 70px;
         padding-right: 25px;
+        margin-bottom: 1.5rem;
     }
     
     .timeline-item:nth-child(even) {
@@ -1305,78 +1420,56 @@ footer p span {
     
     .timeline-item::after {
         left: 15px;
+        width: 16px;
+        height: 16px;
     }
     
     .timeline-item:nth-child(even)::after {
         left: 15px;
     }
     
+    .timeline-content h3 {
+        font-size: 1.3rem;
+    }
+    
+    .timeline-content p {
+        font-size: 0.95rem;
+    }
+
+    /* Registration Form */
+    .registration-form {
+        padding: 2rem 1.5rem;
+        margin: 0 1rem;
+    }
+    
+    .form-group input,
+    .form-group select {
+        padding: 12px;
+        font-size: 1rem;
+    }
+
+    /* Contact Section */
     .contact-content {
         grid-template-columns: 1fr;
+        gap: 2rem;
     }
     
-    .hero-content h1 {
-        font-size: 2.5rem;
-    }
-    
-    .hero-stats {
-        gap: 1.5rem;
-    }
-    
-    .modal-content {
-        width: 95%;
-    }
-    
-    /* Mobile-specific improvements */
-    .container {
-        padding: 0 15px;
-    }
-    
-    header .container {
-        padding: 1rem;
-    }
-    
-    .logo h1 {
-        font-size: 1.5rem;
-    }
-    
-    .hero-content h1 {
-        font-size: 2.5rem;
-    }
-    
-    .hero-stats {
+    .info-item {
+        padding: 1.5rem 1rem;
         flex-direction: column;
+        align-items: flex-start;
         gap: 1rem;
     }
     
-    .stat {
-        width: 100%;
+    .info-item i {
+        font-size: 1.5rem;
     }
-    
-    .section-header h2 {
-        font-size: 2rem;
-    }
-    
-    .events-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-    
-    .event-card {
-        height: 250px;
-    }
-    
-    .event-icon {
-        font-size: 3rem;
-    }
-    
-    .event-content h3 {
-        font-size: 1.2rem;
-    }
-    
-    .modal-modal .modal-content {
+
+    /* Modal */
+    .modal-content {
         width: 95%;
-        height: 70vh;
+        margin: 2% auto;
+        height: 85vh;
     }
     
     .modal-icon {
@@ -1391,201 +1484,199 @@ footer p span {
         font-size: 1.5rem;
     }
     
-    .filter-container {
-        gap: 0.5rem;
+    .modal-actions {
+        flex-direction: column;
+        gap: 1rem;
     }
-    
-    .filter-btn {
-        padding: 8px 16px;
-        font-size: 0.9rem;
-    }
-    
-    .registration-form {
-        padding: 2rem;
-    }
-    
-    .form-group input,
-    .form-group select {
-        padding: 12px;
-    }
-    
-    .success-message {
-        font-size: 0.9rem;
-    }
-    
-    .social-icons a {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-    }
-    
+
+    /* Footer */
     footer p {
         font-size: 0.9rem;
+        line-height: 1.6;
     }
 }
 
-/* Tablet responsiveness */
-@media (max-width: 1024px) and (min-width: 769px) {
+/* Tablet Styles (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        padding: 0 20px;
+    }
+    
     .events-grid {
         grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .contact-content {
-        grid-template-columns: 1fr;
-    }
-    
-    .hero-stats {
         gap: 2rem;
     }
     
-    .stat {
-        padding: 1.5rem;
-    }
-}
-
-/* Small mobile devices */
-@media (max-width: 480px) {
-    .hero-content h1 {
-        font-size: 2rem;
-    }
-    
-    .section-header h2 {
-        font-size: 1.5rem;
-    }
-    
-    .section-header p {
-        font-size: 1rem;
-    }
-    
     .event-card {
-        height: 220px;
+        height: 320px;
     }
     
-    .event-icon {
-        font-size: 2.5rem;
-    }
-    
-    .event-content h3 {
-        font-size: 1.1rem;
-    }
-    
-    .modal-modal .modal-content {
-        height: 80vh;
-    }
-    
-    .modal-icon {
-        font-size: 3rem;
-    }
-    
-    .modal-info h2 {
-        font-size: 1.3rem;
+    .timeline::after {
+        left: 50%;
     }
     
     .timeline-item {
-        padding-left: 60px;
-        padding-right: 15px;
+        width: 50%;
+        padding: 15px 30px;
+    }
+    
+    .timeline-item:nth-child(even) {
+        left: 50%;
     }
     
     .timeline-item::after {
-        left: 10px;
+        left: -12px;
     }
     
     .timeline-item:nth-child(even)::after {
-        left: 10px;
+        left: -12px;
     }
     
-    .registration-form {
-        padding: 1.5rem;
+    .contact-content {
+        grid-template-columns: 2fr 1fr;
+        gap: 3rem;
     }
     
-    .form-group input,
-    .form-group select {
-        padding: 10px;
-    }
-    
-    .success-message {
-        font-size: 0.85rem;
-    }
-    
-    .social-icons a {
-        width: 35px;
-        height: 35px;
-        font-size: 0.9rem;
-    }
-    
-    footer p {
-        font-size: 0.8rem;
+    .modal-content {
+        width: 80%;
+        height: 75vh;
     }
 }
 
-/* Very small devices */
-@media (max-width: 360px) {
-    .hero-content h1 {
-        font-size: 1.7rem;
-    }
-    
-    .section-header h2 {
-        font-size: 1.3rem;
+/* Desktop Styles (1025px and above) */
+@media (min-width: 1025px) {
+    .events-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2.5rem;
     }
     
     .event-card {
-        height: 200px;
-    }
-    
-    .event-icon {
-        font-size: 2rem;
-    }
-    
-    .event-content h3 {
-        font-size: 1rem;
-    }
-    
-    .modal-modal .modal-content {
-        height: 85vh;
-    }
-    
-    .modal-icon {
-        font-size: 2.5rem;
-    }
-    
-    .modal-info h2 {
-        font-size: 1.2rem;
+        height: 350px;
     }
     
     .timeline-item {
-        padding-left: 50px;
-        padding-right: 10px;
+        padding: 20px 40px;
     }
     
-    .timeline-item::after {
-        left: 8px;
+    .modal-content {
+        width: 70%;
+        height: 70vh;
+    }
+}
+
+/* Large Desktop Styles (1440px and above) */
+@media (min-width: 1440px) {
+    .container {
+        max-width: 1400px;
     }
     
-    .timeline-item:nth-child(even)::after {
-        left: 8px;
+    .events-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 3rem;
     }
     
-    .registration-form {
-        padding: 1rem;
+    .event-card {
+        height: 380px;
     }
     
-    .form-group input,
-    .form-group select {
-        padding: 8px;
+    .timeline-item {
+        padding: 25px 50px;
+    }
+}
+
+/* Ultra Wide Screen (1920px and above) */
+@media (min-width: 1920px) {
+    .container {
+        max-width: 1800px;
     }
     
-    .success-message {
-        font-size: 0.8rem;
+    .events-grid {
+        grid-template-columns: repeat(5, 1fr);
     }
     
-    .social-icons a {
-        width: 30px;
-        height: 30px;
-        font-size: 0.8rem;
+    .event-card {
+        height: 400px;
+    }
+}
+
+/* Accessibility & Touch Improvements */
+@media (hover: none) and (pointer: coarse) {
+    /* Larger touch targets for mobile */
+    .btn-primary {
+        padding: 18px 45px;
+        min-height: 50px;
     }
     
-    footer p {
-        font-size: 0.75rem;
+    .filter-btn {
+        min-height: 45px;
+        padding: 12px 20px;
+    }
+    
+    nav ul li a {
+        min-height: 50px;
+        padding: 1.5rem;
+    }
+    
+    /* Reduce animations on mobile for performance */
+    * {
+        animation-duration: 0.3s;
+    }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    :root {
+        --card-border: 1px solid #fff;
+        --text-color: #fff;
+    }
+    
+    .btn-primary {
+        border: 2px solid #fff;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Print Styles */
+@media print {
+    header, .hamburger, nav, footer {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .container {
+        max-width: 100% !important;
+        padding: 0 !important;
+    }
+    
+    section {
+        page-break-inside: avoid;
+        padding: 20px 0;
+    }
+    
+    .btn-primary, .btn-secondary, .filter-btn {
+        display: none;
+    }
+    
+    .timeline::after {
+        background: #000;
+    }
+    
+    .timeline-item {
+        border: 1px solid #000;
+        background: #fff;
+        color: #000;
     }
 }
 
