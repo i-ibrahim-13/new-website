@@ -360,40 +360,39 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Enhanced parallax effect for hero section with gold particles
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero');
-    const particles = document.querySelectorAll('.particle');
-    
-    if (hero) {
-        hero.style.transform = `translateY(${scrolled * 0.3}px)`;
-    }
-    
-    // Animate particles based on scroll
-    particles.forEach((particle, index) => {
-        const speed = 0.1 + (index * 0.05);
-        const rotation = scrolled * 0.01 * (index + 1);
-        particle.style.transform = `translateY(-${scrolled * speed}px) rotate(${rotation}deg)`;
-    });
-});
+// PERFORMANCE: Throttled scroll handlers (60fps)
+let ticking = false;
+function requestTick() {
+    if (!ticking) {
+        requestAnimationFrame(() => {
+            // Parallax hero
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            const particles = document.querySelectorAll('.particle');
+            
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.25}px)`;
+            }
+            
+            particles.forEach((particle, index) => {
+                const speed = 0.08 + (index * 0.03);
+                particle.style.transform = `translateY(-${scrolled * speed}px)`;
+            });
 
-// Add gold shimmer effect to hero text on scroll
-window.addEventListener('scroll', () => {
-    const heroText = document.querySelector('.hero-content h1');
-    const scrollPosition = window.scrollY;
-    const maxScroll = 500;
-    
-    if (heroText) {
-        const opacity = Math.min(1, 1 - (scrollPosition / maxScroll));
-        const glowIntensity = Math.min(20, scrollPosition / 10);
-        
-        heroText.style.textShadow = `
-            0 0 ${glowIntensity}px rgba(212, 175, 55, ${opacity}),
-            0 0 ${glowIntensity * 2}px rgba(212, 175, 55, ${opacity * 0.5})
-        `;
+            // Shimmer text
+            const heroText = document.querySelector('.hero-content h1');
+            if (heroText) {
+                const glow = Math.min(12, scrolled / 15);
+                heroText.style.textShadow = `0 0 ${glow}px rgba(212, 175, 55, 0.8), 0 0 ${glow*1.5}px rgba(212, 175, 55, 0.4)`;
+            }
+            
+            ticking = false;
+        });
+        ticking = true;
     }
-});
+}
+
+window.addEventListener('scroll', requestTick, { passive: true });
 
 // Add confetti effect on successful registration (optional enhancement)
 function createConfetti() {
